@@ -14,6 +14,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -56,6 +57,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function AppHeader() {
+    const router = useRouter()
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
         React.useState<null | HTMLElement>(null);
@@ -143,11 +145,10 @@ export default function AppHeader() {
                             variant="h6"
                             noWrap
                             component="div"
-                            sx={{ display: { xs: 'none', sm: 'block' } }}
+                            sx={{ display: { xs: 'none', sm: 'block' }, cursor: 'pointer' }}
+                            onClick={() => router.push('/')}
                         >
-                            <Link href="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                <span>SoundCloud</span>
-                            </Link>
+                            <span >SoundCloud</span>
                         </Typography>
                         <Search>
                             <SearchIconWrapper>
@@ -173,7 +174,7 @@ export default function AppHeader() {
                                 <span>Playlists</span>
                             </Link>
                             <Link href="/like" >
-                                <span>Like</span>
+                                <span>Likes</span>
                             </Link>
                             <span>Upload</span>
                             <Avatar onClick={handleProfileMenuOpen}>NH</Avatar>
