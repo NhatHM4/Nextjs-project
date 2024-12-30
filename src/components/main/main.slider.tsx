@@ -6,6 +6,7 @@ import { Settings } from "react-slick";
 import { Box, Button, Divider } from "@mui/material";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import Link from "next/link";
 interface IPrpops {
     tracks: ITrackTop[],
     title: string
@@ -89,7 +90,8 @@ const MainSlider = (props: IPrpops) => {
                             src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`}
                             alt="img"
                         />
-                        <h4>{track.title}</h4>
+                        <Link href={`/track/${track._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>{track.title}</Link>
+                        {/* <h4>{track.title}</h4> */}
                         <h5>{track.description}</h5>
                     </div>
                 ))}
