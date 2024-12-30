@@ -4,22 +4,32 @@ import { Container } from "@mui/material";
 
 export default async function HomePage() {
 
-  const res = await sendRequest<IBackendRes<ITrackTop[]>>(
-    {
-      url: 'http://localhost:8000/api/v1/tracks/top',
-      method: 'POST',
-      body: {
-        category: "CHILL",
-        limit: 2
-      }
-    }
-  );
+  const chills = await sendRequest<IBackendRes<ITrackTop[]>>({
+    url: 'http://localhost:8000/api/v1/tracks/top',
+    method: 'POST',
+    body: { category: "CHILL", limit: 10 }
+  });
+
+  const workout = await sendRequest<IBackendRes<ITrackTop[]>>({
+    url: 'http://localhost:8000/api/v1/tracks/top',
+    method: 'POST',
+    body: { category: "WORKOUT", limit: 10 }
+  });
+
+  const party = await sendRequest<IBackendRes<ITrackTop[]>>({
+    url: 'http://localhost:8000/api/v1/tracks/top',
+    method: 'POST',
+    body: { category: "PARTY", limit: 10 }
+  });
+
 
   // console.log(" checkdata", res?.data[1]?.title);
   return (
     <div>
       <Container>
-        <MainSlider />
+        <MainSlider tracks={chills?.data ?? []} title={"Top Chill"} />
+        <MainSlider tracks={workout?.data ?? []} title={"Top Workout"} />
+        <MainSlider tracks={party?.data ?? []} title={"Top Party"} />
       </Container>
 
 
