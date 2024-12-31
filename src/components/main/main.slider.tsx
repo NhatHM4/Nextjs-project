@@ -90,7 +90,7 @@ const MainSlider = (props: IPrpops) => {
                             src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`}
                             alt="img"
                         />
-                        <Link href={`/track/${track._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>{track.title}</Link>
+                        <Link href={`/track/${track._id}?audio=${track.trackUrl}`} style={{ textDecoration: 'none', color: 'inherit' }}>{track.title}</Link>
                         {/* <h4>{track.title}</h4> */}
                         <h5>{track.description}</h5>
                     </div>
