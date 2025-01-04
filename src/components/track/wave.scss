@@ -1,8 +1,14 @@
 .waveform-container {
     cursor: pointer;
     position: relative;
+
+    &:hover {
+        .hover {
+            opacity: 1;
+        }
+    }
   }
-  #hover {
+  .hover {
     position: absolute;
     left: 0;
     top: 0;
@@ -15,9 +21,9 @@
     opacity: 0;
     transition: opacity 0.2s ease;
   }
-  #waveform:hover #hover {
-    opacity: 1;
-  }
+  // .waveform-container:hover .hover {
+  //   opacity: 1;
+  // }
   .time,
   .duration {
     position: absolute;
