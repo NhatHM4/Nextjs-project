@@ -7,6 +7,7 @@ import { WaveSurferOptions } from 'wavesurfer.js';
 import './wave.scss';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
+import Tooltip from '@mui/material/Tooltip';
 
 
 const WaveTrack = () => {
@@ -218,16 +219,22 @@ const WaveTrack = () => {
 
                             {arrComments.map((comment) => {
                                 return (
-                                    <img key={comment.id}
-                                        style={{
-                                            height: 20,
-                                            width: 20,
-                                            position: 'absolute',
-                                            top: 145,
-                                            left: `calc(${calLeft(comment.moment) * 100}%)`,
-                                            zIndex: 20
-                                        }}
-                                        src={`${comment.avatar}`} alt="avatar" />
+                                    <Tooltip title={`${comment.content}`} arrow>
+                                        <img key={comment.id}
+                                            onPointerMove={(e) => {
+                                                const hover = hoverEl.current!;
+                                                hover.style.width = `calc(${calLeft(comment.moment) * 100}%)`
+                                            }}
+                                            style={{
+                                                height: 20,
+                                                width: 20,
+                                                position: 'absolute',
+                                                top: 145,
+                                                left: `calc(${calLeft(comment.moment) * 100}%)`,
+                                                zIndex: 20
+                                            }}
+                                            src={`${comment.avatar}`} alt="avatar" />
+                                    </Tooltip>
                                 )
                             })}
                         </div>
