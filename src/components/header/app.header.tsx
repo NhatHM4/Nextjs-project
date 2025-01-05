@@ -1,7 +1,7 @@
 'use client';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import SearchIcon from '@mui/icons-material/Search';
-import { Avatar } from '@mui/material';
+import { Avatar, Button } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -15,6 +15,7 @@ import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -58,6 +59,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function AppHeader() {
     const router = useRouter()
+    const session = useSession();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
         React.useState<null | HTMLElement>(null);
@@ -66,6 +68,7 @@ export default function AppHeader() {
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+    console.log(session);
     const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -170,14 +173,26 @@ export default function AppHeader() {
                                 textDecoration: 'unset'
                             }
                         }}>
-                            <Link href="/playlist" >
-                                <span>Playlists</span>
-                            </Link>
-                            <Link href="/like" >
-                                <span>Likes</span>
-                            </Link>
-                            <span>Upload</span>
-                            <Avatar onClick={handleProfileMenuOpen}>NH</Avatar>
+
+                            {
+                                session.status === 'authenticated'
+                                    ?
+                                    <>
+                                        <Link href="/playlist" >
+                                            <span>Playlists</span>
+                                        </Link>
+                                        <Link href="/like" >
+                                            <span>Likes</span>
+                                        </Link>
+                                        <span>Upload</span>
+                                        <Avatar onClick={handleProfileMenuOpen} src={`${session.data.user?.image}`}>NH</Avatar>
+                                    </>
+                                    :
+                                    <Link href="/api/auth/signin" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                        Login
+                                    </Link>
+                            }
+
                         </Box>
                         <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                             <IconButton
