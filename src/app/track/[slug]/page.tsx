@@ -9,8 +9,7 @@ const DetailTrackPage = ({ params }: { params: { slug: string } }) => {
     const audio = searchParams.get('audio')
     return (
         <Container>
-            Detail track slug
-            <div><WaveTrack /></div>
+            <WaveTrack />
         </Container>
     );
 }
