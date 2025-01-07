@@ -15,7 +15,7 @@ import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useSession } from 'next-auth/react';
+import { useSession, signIn, signOut } from 'next-auth/react';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -130,8 +130,8 @@ export default function AppHeader() {
                     Profile
                 </Link>
             </MenuItem>
-            <MenuItem onClick={handleMenuClose}>
-                <span>Logout</span>
+            <MenuItem onClick={() => { handleMenuClose(); signOut(); }}>
+                Logout
             </MenuItem>
         </Menu>
     );
@@ -188,7 +188,7 @@ export default function AppHeader() {
                                         <Avatar onClick={handleProfileMenuOpen} src={`${session.data.user?.image}`}>NH</Avatar>
                                     </>
                                     :
-                                    <Link href="/api/auth/signin" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <Link href={"#"} onClick={() => signIn()} style={{ textDecoration: 'none', color: 'inherit' }}>
                                         Login
                                     </Link>
                             }
