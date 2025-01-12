@@ -43,7 +43,8 @@ export const authOptions: AuthOptions = {
         GithubProvider({
             clientId: process.env.GITHUB_ID!,
             clientSecret: process.env.GITHUB_SECRET!,
-        })
+        }),
+
     ],
     callbacks: {
 
@@ -84,8 +85,15 @@ export const authOptions: AuthOptions = {
             session.access_token = token.access_token
             session.refresh_token = token.refresh_token
             return session
-        }
+        },
+        async redirect({ url, baseUrl }) {
+            return "/";
+        },
     },
+    pages: {
+        signIn: "/auth/signin",
+    },
+
 
 }
 

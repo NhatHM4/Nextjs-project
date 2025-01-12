@@ -1,10 +1,11 @@
-import React from 'react';
 
+import AuthSignIn from "@/components/auth/auth.signin";
 const SignInPage = () => {
+
     return (
-        <div>
-            aaaa
-        </div>
+        <>
+            <AuthSignIn />
+        </>
     );
 }
 
