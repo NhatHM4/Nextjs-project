@@ -23,11 +23,15 @@ export const authOptions: AuthOptions = {
             },
             async authorize(credentials, req) {
                 // Add logic here to look up the user from the credentials supplied
-                const user = { id: "1", name: "J Smith", email: "jsmith@example.com" }
+                const res = await sendRequest<IBackendRes<JWT>>({
+                    url: 'http://localhost:8000/api/v1/auth/login',
+                    method: 'POST',
+                    body: { username: credentials?.username, password: credentials?.password }
+                });
 
-                if (user) {
+                if (res.data) {
                     // Any object returned will be saved in `user` property of the JWT
-                    return user
+                    return res.data as any;
                 } else {
                     // If you return null then an error will be displayed advising the user to check their details.
                     return null
@@ -57,6 +61,18 @@ export const authOptions: AuthOptions = {
                     token.refresh_token = res.data.refresh_token;
                     token.user = res.data.user;
                     token.user.image = user?.image as string;
+                }
+            }
+
+            if (trigger === 'signIn' && account?.provider === 'credentials') {
+
+                if (user) {
+                    //@ts-ignore
+                    token.access_token = user?.access_token;
+                    //@ts-ignore
+                    token.refresh_token = user?.refresh_token;
+                    //@ts-ignore
+                    token.user = user?.user;
                 }
             }
             return token
