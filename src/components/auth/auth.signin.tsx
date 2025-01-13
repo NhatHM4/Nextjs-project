@@ -7,7 +7,8 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Avatar, Box, Button, Divider, Grid, TextField, Typography } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
-
+import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { signIn } from "next-auth/react";
 import Link from "next/link";
@@ -22,6 +23,8 @@ const AuthSignIn = (props: any) => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const [open, setOpen] = useState<boolean>(false);
+    const [errorMessageLogin, setErrorMessageLogin] = useState<string>('');
 
     const [isErrorUsername, setIsErrorUsername] = useState<boolean>(false);
     const [isErrorPassword, setIsErrorPassword] = useState<boolean>(false);
@@ -54,19 +57,20 @@ const AuthSignIn = (props: any) => {
                 callbackUrl: `${window.location.origin}`
             });
             if (res?.error) {
-                setIsErrorUsername(true);
-                setErrorUsername(res?.error ? res.error as string : "");
-                setErrorPassword(res?.error ? res.error as string : "");
-                setIsErrorPassword(true);
-            } else {
-                setIsErrorPassword(false);
-                setIsErrorUsername(false);
+                setErrorMessageLogin(res?.error ? res.error as string : "");
+                setOpen(true);
             }
             if (res?.url) {
                 router.push(res.url);
             }
         } catch (error) {
             console.error(error);
+        }
+    }
+
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+        if (event.key === 'Enter') {
+            handleSubmit();
         }
     }
 
@@ -141,6 +145,7 @@ const AuthSignIn = (props: any) => {
                             type={showPassword ? "text" : "password"}
                             error={isErrorPassword}
                             helperText={errorPassword}
+                            onKeyDown={handleKeyDown}
 
                             InputProps={{
                                 endAdornment: <InputAdornment position="end">
@@ -195,7 +200,16 @@ const AuthSignIn = (props: any) => {
                     </div>
                 </Grid>
             </Grid>
-
+            <Snackbar open={open} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+                <Alert
+                    onClose={() => setOpen(false)}
+                    severity="error"
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                >
+                    {errorMessageLogin}
+                </Alert>
+            </Snackbar>
         </Box>
 
     )
