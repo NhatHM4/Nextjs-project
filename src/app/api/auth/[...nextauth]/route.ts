@@ -90,9 +90,9 @@ export const authOptions: AuthOptions = {
             return "/";
         },
     },
-    pages: {
-        signIn: "/auth/signin",
-    },
+    // pages: {
+    //     signIn: "/auth/signin",
+    // },
 
 
 }

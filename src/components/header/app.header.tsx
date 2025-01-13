@@ -188,7 +188,7 @@ export default function AppHeader() {
                                         <Avatar onClick={handleProfileMenuOpen} src={`${session.data.user?.image}`}>NH</Avatar>
                                     </>
                                     :
-                                    <Link href={"#"} onClick={() => signIn()} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <Link href={"/auth/signin"} style={{ textDecoration: 'none', color: 'inherit' }}>
                                         Login
                                     </Link>
                             }

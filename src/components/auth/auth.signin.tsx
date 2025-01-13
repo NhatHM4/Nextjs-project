@@ -23,9 +23,6 @@ const AuthSignIn = (props: any) => {
     const [errorUsername, setErrorUsername] = useState<string>("");
     const [errorPassword, setErrorPassword] = useState<string>("");
 
-    const handleGithubSignIn = () => {
-        signIn("github"); // Gọi Google provider
-    };
 
     const handleSubmit = () => {
         setIsErrorUsername(false);
@@ -150,7 +147,7 @@ const AuthSignIn = (props: any) => {
                         >
                             <Avatar
                                 onClick={() => {
-                                    handleGithubSignIn();
+                                    signIn("github");
                                 }}
                                 sx={{
                                     cursor: "pointer",
