@@ -1,18 +1,24 @@
 'use client'
-import { Avatar, Box, Button, Divider, Grid, TextField, Typography } from "@mui/material";
-import LockIcon from '@mui/icons-material/Lock';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import GoogleIcon from '@mui/icons-material/Google';
+import LockIcon from '@mui/icons-material/Lock';
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import InputAdornment from '@mui/material/InputAdornment';
+import { Avatar, Box, Button, Divider, Grid, TextField, Typography } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
 
-import { useState } from "react";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { signIn } from "next-auth/react";
+import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from 'next/navigation';
+
+
+
 
 const AuthSignIn = (props: any) => {
-
+    const router = useRouter()
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -24,7 +30,7 @@ const AuthSignIn = (props: any) => {
     const [errorPassword, setErrorPassword] = useState<string>("");
 
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         setIsErrorUsername(false);
         setIsErrorPassword(false);
         setErrorUsername("");
@@ -40,12 +46,28 @@ const AuthSignIn = (props: any) => {
             setErrorPassword("Password is not empty.")
             return;
         }
-        signIn("credentials", {
-            username,
-            password
-        })
-
-
+        try {
+            const res = await signIn('credentials', {
+                username,
+                password,
+                redirect: false,
+                callbackUrl: `${window.location.origin}`
+            });
+            if (res?.error) {
+                setIsErrorUsername(true);
+                setErrorUsername(res?.error ? res.error as string : "");
+                setErrorPassword(res?.error ? res.error as string : "");
+                setIsErrorPassword(true);
+            } else {
+                setIsErrorPassword(false);
+                setIsErrorUsername(false);
+            }
+            if (res?.url) {
+                router.push(res.url);
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     return (
@@ -64,6 +86,7 @@ const AuthSignIn = (props: any) => {
                     height: "100vh"
                 }}
             >
+
                 <Grid
                     item
                     xs={12}
@@ -75,6 +98,9 @@ const AuthSignIn = (props: any) => {
                     }}
                 >
                     <div style={{ margin: "20px" }}>
+                        <Link href="/">
+                            <ArrowBackIcon />
+                        </Link>
                         <Box sx={{
                             display: "flex",
                             justifyContent: "center",

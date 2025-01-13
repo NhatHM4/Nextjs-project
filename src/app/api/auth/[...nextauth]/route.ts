@@ -34,7 +34,8 @@ export const authOptions: AuthOptions = {
                     return res.data as any;
                 } else {
                     // If you return null then an error will be displayed advising the user to check their details.
-                    return null
+                    // Trả về lỗi khi thông tin đăng nhập sai
+                    throw new Error(res.message);
 
                     // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
                 }
@@ -86,9 +87,8 @@ export const authOptions: AuthOptions = {
             session.refresh_token = token.refresh_token
             return session
         },
-        async redirect({ url, baseUrl }) {
-            return "/";
-        },
+
+
     },
     // pages: {
     //     signIn: "/auth/signin",
