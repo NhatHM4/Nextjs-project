@@ -18,7 +18,7 @@ const VisuallyHiddenInput = styled('input')({
     whiteSpace: 'nowrap',
     width: 1,
 });
-function InputFileUpload() {
+export function InputFileUpload() {
     return (
         <Button
             component="label"
