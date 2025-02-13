@@ -9,6 +9,22 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { InputFileUpload } from '@/components/track/step1';
 import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+
+const category = [
+    {
+        value: 'CHILL',
+        label: 'CHILL',
+    },
+    {
+        value: 'WORKOUT',
+        label: 'WORKOUT',
+    },
+    {
+        value: 'PARTY',
+        label: 'PARTY',
+    }
+];
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
     return (
@@ -76,7 +92,22 @@ const Step2 = () => {
                         >
                             <TextField fullWidth id="standard-basic" label="Title" variant="standard" />
                             <TextField fullWidth id="standard-basic" label="Description" variant="standard" />
-                            <TextField fullWidth id="standard-basic" label="Category" variant="standard" />
+                            <TextField
+                                sx={{
+                                    mt: 3
+                                }}
+                                id="outlined-select-currency"
+                                select
+                                label="Category"
+                                fullWidth
+                                variant="standard"
+                            >
+                                {category.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
                             <Button variant="outlined">Save</Button>
                         </Box>
                     </Grid>
