@@ -51,4 +51,13 @@ declare global {
         result: T[]
     }
 
+    interface UploadResponse {
+        statusCode: number;
+        message: string;
+        data: {
+            fileName: string;
+        };
+    }
+
+
 }

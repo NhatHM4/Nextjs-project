@@ -49,24 +49,26 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-const Step2 = () => {
+const Step2 = ({ percentCompleted }: { percentCompleted: number }) => {
+
+    console.log(percentCompleted);
     const [progress, setProgress] = useState(10);
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
-        }, 800);
-        return () => {
-            clearInterval(timer);
-        };
-    }, []);
+    // useEffect(() => {
+    //     const timer = setInterval(() => {
+    //         setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
+    //     }, 800);
+    //     return () => {
+    //         clearInterval(timer);
+    //     };
+    // }, []);
 
 
     return (
         <Container>
             <span>Your track is being uploaded</span>
             <Box sx={{ width: '100%' }}>
-                <LinearProgressWithLabel value={progress} />
+                <LinearProgressWithLabel value={percentCompleted} />
             </Box>
             <Box sx={{ flexGrow: 1 }}>
                 <Grid container spacing={2}>

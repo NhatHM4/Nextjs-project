@@ -29,6 +29,7 @@ function CustomTabPanel(props: TabPanelProps) {
 
 const UploadTab = () => {
     const [value, setValue] = React.useState(0);
+    const [percentCompleted, setPercentCompleted] = React.useState<number>(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
@@ -42,10 +43,10 @@ const UploadTab = () => {
                 </Tabs>
             </Box>
             <CustomTabPanel value={value} index={0}>
-                <Step1 />
+                <Step1 setValue={setValue} setPercentCompleted={setPercentCompleted} />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-                <Step2 />
+                <Step2 percentCompleted={percentCompleted} />
             </CustomTabPanel>
         </Box>
     );
