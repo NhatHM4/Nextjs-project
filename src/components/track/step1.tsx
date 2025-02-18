@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { sendRequest, sendRequestFile } from '@/utils/api';
 import { useSession } from 'next-auth/react';
+import axios from 'axios';
 
 
 
@@ -49,17 +50,31 @@ const Step1 = () => {
             const audio = acceptedFiles[0]
             const formData = new FormData();
             formData.append('fileUpload', audio)
-            const res = await sendRequestFile<IBackendRes<ITrackTop>>({
-                url: 'http://localhost:8000/api/v1/files/upload',
-                method: 'POST',
-                body: formData,
-                headers: {
-                    // 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryy3RwSaVNDeLU3fEn',
-                    'Authorization': `Bearer ${session?.access_token}`,
-                    'target_type': 'tracks'
-                }
-            });
-            console.log(res);
+            try {
+                const res = await axios.post('http://localhost:8000/api/v1/files/upload', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${session?.access_token}`,
+                        'target_type': 'tracks'
+                    }
+                });
+                console.log(res);
+            } catch (error) {
+                console.log(error);
+
+            }
+
+            // const res = await sendRequestFile<IBackendRes<ITrackTop>>({
+            //     url: 'http://localhost:8000/api/v1/files/upload',
+            //     method: 'POST',
+            //     body: formData,
+            //     headers: {
+            //         // 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryy3RwSaVNDeLU3fEn',
+            //         'Authorization': `Bearer ${session?.access_token}`,
+            //         'target_type': 'tracks'
+            //     }
+            // });
+
         }
     }, [session])
 
