@@ -5,6 +5,9 @@ import './upload.scss';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { sendRequest, sendRequestFile } from '@/utils/api';
+import { useSession } from 'next-auth/react';
+
 
 
 const VisuallyHiddenInput = styled('input')({
@@ -40,11 +43,32 @@ export function InputFileUpload() {
 
 
 const Step1 = () => {
+    const { data: session } = useSession();
+    const onDrop = useCallback(async (acceptedFiles: FileWithPath[]) => {
+        if (acceptedFiles && acceptedFiles.length > 0) {
+            const audio = acceptedFiles[0]
+            const formData = new FormData();
+            formData.append('fileUpload', audio)
+            const res = await sendRequestFile<IBackendRes<ITrackTop>>({
+                url: 'http://localhost:8000/api/v1/files/upload',
+                method: 'POST',
+                body: formData,
+                headers: {
+                    // 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryy3RwSaVNDeLU3fEn',
+                    'Authorization': `Bearer ${session?.access_token}`,
+                    'target_type': 'tracks'
+                }
+            });
+            console.log(res);
+        }
+    }, [session])
 
-    const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
-        console.log(acceptedFiles);
-    }, [])
-    const { acceptedFiles, getRootProps, getInputProps } = useDropzone({ onDrop });
+    const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
+        onDrop,
+        accept: {
+            "audio/*": [".mp3"]
+        }
+    });
     const files = acceptedFiles.map((file: FileWithPath) => (
         <li key={file.path}>
             {file.path} - {file.size} bytes
