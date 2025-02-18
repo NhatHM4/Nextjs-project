@@ -42,10 +42,15 @@ export function InputFileUpload() {
     );
 }
 
+interface IProps {
+    setValue: (value: number) => void,
+    setAudio: (audio: { fileName: string, percent: number }) => void
+}
 
-const Step1 = () => {
+const Step1 = ({ setValue, setAudio }: IProps) => {
     const { data: session } = useSession();
     const onDrop = useCallback(async (acceptedFiles: FileWithPath[]) => {
+        setValue(1);
         if (acceptedFiles && acceptedFiles.length > 0) {
             const audio = acceptedFiles[0]
             const formData = new FormData();
@@ -55,7 +60,14 @@ const Step1 = () => {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'Authorization': `Bearer ${session?.access_token}`,
-                        'target_type': 'tracks'
+                        'target_type': 'tracks',
+                        'delay': '10000'
+                    },
+                    onUploadProgress: (progressEvent: any) => {
+                        let percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total);
+                        // do whatever you like with the percentage complete
+                        // maybe dispatch an action that will update a progress bar or something
+                        setAudio({ fileName: audio.name, percent: percentCompleted })
                     }
                 });
                 console.log(res);
@@ -63,17 +75,6 @@ const Step1 = () => {
                 console.log(error);
 
             }
-
-            // const res = await sendRequestFile<IBackendRes<ITrackTop>>({
-            //     url: 'http://localhost:8000/api/v1/files/upload',
-            //     method: 'POST',
-            //     body: formData,
-            //     headers: {
-            //         // 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryy3RwSaVNDeLU3fEn',
-            //         'Authorization': `Bearer ${session?.access_token}`,
-            //         'target_type': 'tracks'
-            //     }
-            // });
 
         }
     }, [session])

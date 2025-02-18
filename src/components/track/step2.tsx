@@ -49,24 +49,19 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-const Step2 = () => {
-    const [progress, setProgress] = useState(10);
+interface IProps {
+    audio: { fileName: string, percent: number }
+}
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
-        }, 800);
-        return () => {
-            clearInterval(timer);
-        };
-    }, []);
+const Step2 = ({ audio }: IProps) => {
+    const [selectedCategory, setSelectedCategory] = useState<string>('');
 
 
     return (
         <Container>
-            <span>Your track is being uploaded</span>
+            <span>{audio.fileName}</span>
             <Box sx={{ width: '100%' }}>
-                <LinearProgressWithLabel value={progress} />
+                <LinearProgressWithLabel value={audio.percent} />
             </Box>
             <Box sx={{ flexGrow: 1 }}>
                 <Grid container spacing={2}>
@@ -101,6 +96,8 @@ const Step2 = () => {
                                 label="Category"
                                 fullWidth
                                 variant="standard"
+                                value={selectedCategory} // Tránh giá trị undefined
+                                onChange={(event) => setSelectedCategory(event.target.value)}
                             >
                                 {category.map((option) => (
                                     <MenuItem key={option.value} value={option.value}>

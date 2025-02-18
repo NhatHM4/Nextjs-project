@@ -5,6 +5,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Step1 from '@/components/track/step1';
 import Step2 from '@/components/track/step2';
+import { Percent } from '@mui/icons-material';
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
@@ -29,6 +30,11 @@ function CustomTabPanel(props: TabPanelProps) {
 
 const UploadTab = () => {
     const [value, setValue] = React.useState(0);
+    const [audio, setAudio] = React.useState({
+        fileName: '',
+        percent: 0
+    });
+
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
@@ -42,10 +48,10 @@ const UploadTab = () => {
                 </Tabs>
             </Box>
             <CustomTabPanel value={value} index={0}>
-                <Step1 />
+                <Step1 setValue={setValue} setAudio={setAudio} />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-                <Step2 />
+                <Step2 audio={audio} />
             </CustomTabPanel>
         </Box>
     );
