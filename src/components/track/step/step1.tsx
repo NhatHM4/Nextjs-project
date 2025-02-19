@@ -1,11 +1,10 @@
 'use-client';
 import React, { useCallback } from 'react';
 import { useDropzone, FileWithPath } from 'react-dropzone';
-import './upload.scss';
+import '../upload.scss';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { sendRequest, sendRequestFile } from '@/utils/api';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
 
@@ -22,7 +21,7 @@ const VisuallyHiddenInput = styled('input')({
     whiteSpace: 'nowrap',
     width: 1,
 });
-export function InputFileUpload() {
+function InputFileUpload() {
     return (
         <Button
             component="label"
@@ -44,7 +43,7 @@ export function InputFileUpload() {
 
 interface IProps {
     setValue: (value: number) => void,
-    setAudio: (audio: { fileName: string, percent: number }) => void
+    setAudio: (audio: { fileName: string, percent: number, uploadedTrackName: string; }) => void
 }
 
 const Step1 = ({ setValue, setAudio }: IProps) => {
@@ -67,10 +66,20 @@ const Step1 = ({ setValue, setAudio }: IProps) => {
                         let percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total);
                         // do whatever you like with the percentage complete
                         // maybe dispatch an action that will update a progress bar or something
-                        setAudio({ fileName: audio.name, percent: percentCompleted })
+                        setAudio({
+                            fileName: audio.name,
+                            percent: percentCompleted,
+                            uploadedTrackName: ''
+                        })
                     }
                 });
-                console.log(res);
+                if (res.data.data) {
+                    setAudio({
+                        fileName: audio.name,
+                        percent: 100,
+                        uploadedTrackName: res.data.data.fileName
+                    })
+                }
             } catch (error) {
                 console.log(error);
 

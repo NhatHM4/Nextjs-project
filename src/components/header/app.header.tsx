@@ -184,7 +184,9 @@ export default function AppHeader() {
                                         <Link href="/like" >
                                             <span>Likes</span>
                                         </Link>
-                                        <span>Upload</span>
+                                        <Link href="/track/upload" >
+                                            <span>Upload</span>
+                                        </Link>
                                         <Avatar onClick={handleProfileMenuOpen} src={`${session.data.user?.image}`}>NH</Avatar>
                                     </>
                                     :

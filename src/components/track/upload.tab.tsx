@@ -3,8 +3,8 @@ import React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import Step1 from '@/components/track/step1';
-import Step2 from '@/components/track/step2';
+import Step1 from '@/components/track/step/step1';
+import Step2 from '@/components/track/step/step2';
 import { Percent } from '@mui/icons-material';
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -32,7 +32,8 @@ const UploadTab = () => {
     const [value, setValue] = React.useState(0);
     const [audio, setAudio] = React.useState({
         fileName: '',
-        percent: 0
+        percent: 0,
+        uploadedTrackName: ''
     });
 
 
