@@ -43,7 +43,7 @@ function InputFileUpload() {
 
 interface IProps {
     setValue: (value: number) => void,
-    setAudio: (audio: { fileName: string, percent: number, uploadedTrackName: string; }) => void
+    setAudio: any
 }
 
 const Step1 = ({ setValue, setAudio }: IProps) => {
@@ -59,8 +59,7 @@ const Step1 = ({ setValue, setAudio }: IProps) => {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'Authorization': `Bearer ${session?.access_token}`,
-                        'target_type': 'tracks',
-                        'delay': '10000'
+                        'target_type': 'tracks'
                     },
                     onUploadProgress: (progressEvent: any) => {
                         let percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total);
@@ -73,13 +72,10 @@ const Step1 = ({ setValue, setAudio }: IProps) => {
                         })
                     }
                 });
-                if (res.data.data) {
-                    setAudio({
-                        fileName: audio.name,
-                        percent: 100,
-                        uploadedTrackName: res.data.data.fileName
-                    })
-                }
+                setAudio((prevState: any) => ({
+                    ...prevState,
+                    uploadedTrackName: res.data.data.fileName
+                }))
             } catch (error) {
                 console.log(error);
 

@@ -13,6 +13,7 @@ import MenuItem from '@mui/material/MenuItem';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { sendRequest } from '@/utils/api';
+import { useToast } from '@/utils/toast/useToast';
 
 const category = [
     {
@@ -99,6 +100,7 @@ function InputFileUpload({ handleUploadImage }: { handleUploadImage: (event: any
 
 
 const Step2 = ({ audio }: IProps) => {
+    const toast = useToast();
     const [info, setInfo] = useState<INewTrack>({
         title: '',
         description: '',
@@ -140,27 +142,38 @@ const Step2 = ({ audio }: IProps) => {
 
     const createTrack = async () => {
 
-        try {
-            const res = await axios.post('http://localhost:8000/api/v1/tracks', info, {
-                headers: {
-                    // 'Content-Type': 'multipart/x-www-form-urlencoded',
-                    'Authorization': `Bearer ${session?.access_token}`,
-                }
-            });
-            console.log(res);
-        } catch (error) {
-            console.log(error);
+        // try {
+        //     const res = await axios.post('http://localhost:8000/api/v1/tracks', info, {
+        //         headers: {
+        //             // 'Content-Type': 'multipart/x-www-form-urlencoded',
+        //             'Authorization': `Bearer ${session?.access_token}`,
+        //         }
+        //     });
+        //     console.log(res);
+        // } catch (error) {
+        //     console.log(error);
 
+        // }
+
+        const res = await sendRequest<IBackendRes<ITrackTop[]>>({
+            url: 'http://localhost:8000/api/v1/tracks',
+            method: 'POST',
+            body: info,
+            headers: {
+                'Authorization': `Bearer ${session?.access_token}`
+            }
+        });
+
+        if (res.data) {
+            toast.success(res.message)
+        } else {
+            toast.error(res.message)
         }
-
-        // const chills = await sendRequest<IBackendRes<ITrackTop[]>>({
-        //     url: 'http://localhost:8000/api/v1/tracks',
-        //     method: 'POST',
-        //     body: info,
-        //     headers: {
-        //         'Authorization': `Bearer ${session?.access_token}`
-        //     }
-        // });
+        // if (res.data) {
+        //     toast.success(res.message)
+        // } else {
+        //     toast.error(res.message)
+        // }
 
 
     }
@@ -180,8 +193,10 @@ const Step2 = ({ audio }: IProps) => {
                                 width: 250,
                                 height: 250
                             }}>
-
-                                <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${info.imgUrl}`} style={{ width: '100%', height: '100%' }} />
+                                {
+                                    info.imgUrl &&
+                                    <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${info.imgUrl}`} style={{ width: '100%', height: '100%' }} />
+                                }
 
                             </div>
                         </Box>
