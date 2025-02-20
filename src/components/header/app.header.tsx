@@ -126,7 +126,7 @@ export default function AppHeader() {
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
             <MenuItem onClick={handleMenuClose}>
-                <Link href="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Link href={`/profile/${session.data?.user?._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                     Profile
                 </Link>
             </MenuItem>
