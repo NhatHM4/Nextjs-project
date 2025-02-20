@@ -1,19 +1,18 @@
 'use-client';
-import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import { use, useEffect, useState } from 'react';
-import { Button, Container, createTheme } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import MenuItem from '@mui/material/MenuItem';
-import axios from 'axios';
-import { useSession } from 'next-auth/react';
 import { sendRequest } from '@/utils/api';
 import { useToast } from '@/utils/toast/useToast';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { Button, Container } from '@mui/material';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
+import MenuItem from '@mui/material/MenuItem';
+import { styled } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import axios from 'axios';
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 
 const category = [
     {
@@ -45,13 +44,6 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
         </Box>
     );
 }
-const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-}));
 
 interface INewTrack {
     title: string;
@@ -62,7 +54,12 @@ interface INewTrack {
 }
 
 interface IProps {
-    audio: { fileName: string, percent: number, uploadedTrackName: string; }
+    audio: {
+        fileName: string,
+        percent: number,
+        uploadedTrackName: string;
+    },
+    setValue: (value: number) => void
 }
 
 const VisuallyHiddenInput = styled('input')({
@@ -99,7 +96,7 @@ function InputFileUpload({ handleUploadImage }: { handleUploadImage: (event: any
 }
 
 
-const Step2 = ({ audio }: IProps) => {
+const Step2 = ({ audio, setValue }: IProps) => {
     const toast = useToast();
     const [info, setInfo] = useState<INewTrack>({
         title: '',
@@ -141,20 +138,6 @@ const Step2 = ({ audio }: IProps) => {
     }, [audio])
 
     const createTrack = async () => {
-
-        // try {
-        //     const res = await axios.post('http://localhost:8000/api/v1/tracks', info, {
-        //         headers: {
-        //             // 'Content-Type': 'multipart/x-www-form-urlencoded',
-        //             'Authorization': `Bearer ${session?.access_token}`,
-        //         }
-        //     });
-        //     console.log(res);
-        // } catch (error) {
-        //     console.log(error);
-
-        // }
-
         const res = await sendRequest<IBackendRes<ITrackTop[]>>({
             url: 'http://localhost:8000/api/v1/tracks',
             method: 'POST',
@@ -165,17 +148,11 @@ const Step2 = ({ audio }: IProps) => {
         });
 
         if (res.data) {
+            setValue(0);
             toast.success(res.message)
         } else {
             toast.error(res.message)
         }
-        // if (res.data) {
-        //     toast.success(res.message)
-        // } else {
-        //     toast.error(res.message)
-        // }
-
-
     }
 
     return (

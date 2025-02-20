@@ -42,22 +42,20 @@ const UploadTab = () => {
         setValue(newValue);
     };
     return (
-        <ToastProvider>
-            <Box sx={{ width: '100%', border: 1, borderColor: 'divider', marginTop: 2 }}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                        <Tab label="Track" disabled={value !== 0} />
-                        <Tab label="Basic Information" disabled={value !== 1} />
-                    </Tabs>
-                </Box>
-                <CustomTabPanel value={value} index={0}>
-                    <Step1 setValue={setValue} setAudio={setAudio} />
-                </CustomTabPanel>
-                <CustomTabPanel value={value} index={1}>
-                    <Step2 audio={audio} />
-                </CustomTabPanel>
+        <Box sx={{ width: '100%', border: 1, borderColor: 'divider', marginTop: 2 }}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                    <Tab label="Track" disabled={value !== 0} />
+                    <Tab label="Basic Information" disabled={value !== 1} />
+                </Tabs>
             </Box>
-        </ToastProvider>
+            <CustomTabPanel value={value} index={0}>
+                <Step1 setValue={setValue} setAudio={setAudio} />
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={1}>
+                <Step2 audio={audio} setValue={setValue} />
+            </CustomTabPanel>
+        </Box>
     );
 }
 
