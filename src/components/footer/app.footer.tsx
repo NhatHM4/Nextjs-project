@@ -1,4 +1,5 @@
 'use client';
+import { useTrackContext } from '@/lib/track.wrapper';
 import { useHasMounted } from '@/utils/customHooks';
 import { Box } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
@@ -11,10 +12,15 @@ import 'react-h5-audio-player/lib/styles.css';
 
 const AppFooter = () => {
     const hasMounted = useHasMounted();
+    const trackContext = useTrackContext();
 
     if (!hasMounted) {
         return (<></>);
     }
+
+    console.log("check track context", trackContext);
+
+
     return (
         <div style={{ marginTop: 50 }}>
             <CssBaseline />
@@ -33,8 +39,8 @@ const AppFooter = () => {
                         justifyContent: "center",
                         minWidth: 100
                     }}>
-                        <div style={{ color: "#ccc" }}>Eric</div>
-                        <div style={{ color: "black" }}>Who am I ?</div>
+                        <div style={{ color: "#ccc" }}>{trackContext?.trackContext?.title}</div>
+                        <div style={{ color: "black" }}>{trackContext?.trackContext?.description}</div>
                     </div>
                 </Container>
             </AppBar>

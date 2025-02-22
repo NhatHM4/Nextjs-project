@@ -1,3 +1,4 @@
+import { useTrackContext } from '@/lib/track.wrapper';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
@@ -8,14 +9,15 @@ import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+import PauseIcon from '@mui/icons-material/Pause';
 
 interface IProps {
-
     track: ITrackTop;
 }
 
 export default function TrackProfile({ track }: IProps) {
     const theme = useTheme();
+    const trackContext = useTrackContext();
 
     return (
         <Card sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -36,9 +38,34 @@ export default function TrackProfile({ track }: IProps) {
                     <IconButton aria-label="previous">
                         {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
                     </IconButton>
-                    <IconButton aria-label="play/pause">
-                        <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-                    </IconButton>
+                    {/* trường hợp chưa chay track này (không ở context)  hoặc ( nếu đang chạy ( ở context)  và cái nút đang là pause) */}
+                    {
+                        (track._id !== trackContext?.trackContext._id ||
+                            track._id === trackContext?.trackContext._id && trackContext?.trackContext.isPlaying === false
+                        )
+                        &&
+                        <IconButton aria-label="play/pause"
+                            onClick={(e) => {
+                                trackContext?.setTrackContext({ ...track, isPlaying: true });
+                            }}
+                        >
+                            <PlayArrowIcon sx={{ height: 38, width: 38 }} />
+                        </IconButton>
+                    }
+
+                    {/* trường hợp đang chạy track nay */}
+                    {track._id === trackContext?.trackContext._id && trackContext?.trackContext.isPlaying
+                        &&
+                        <IconButton aria-label="play/pause"
+                            onClick={(e) => {
+                                trackContext.setTrackContext({ ...track, isPlaying: false });
+                            }}
+                        >
+                            <PauseIcon sx={{ height: 38, width: 38 }}
+                            />
+                        </IconButton>
+                    }
+
                     <IconButton aria-label="next">
                         {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
                     </IconButton>
