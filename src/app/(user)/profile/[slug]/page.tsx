@@ -1,6 +1,8 @@
 
 
+import ProfileGrid from "@/components/track/ProfileGrid";
 import { sendRequest } from "@/utils/api";
+import { Container } from "@mui/material";
 
 
 const ProfilePage = async ({ params }: { params: { slug: string } }) => {
@@ -10,17 +12,14 @@ const ProfilePage = async ({ params }: { params: { slug: string } }) => {
         method: 'POST',
         body: { id: params.slug },
 
-    }); 5
+    });
+    console.log(tracks);
+
 
     return (
-        <div>
-            {tracks?.data?.result?.map((track) => (
-                <div key={track._id}>
-                    <h3>{track.title}</h3>
-                    <p>{track.description}</p>
-                </div>
-            ))}
-        </div>
+        <Container sx={{ py: 2 }}>
+            <ProfileGrid tracks={tracks?.data?.result ?? []} />
+        </Container>
     );
 }
 

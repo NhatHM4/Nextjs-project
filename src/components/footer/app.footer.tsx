@@ -16,11 +16,12 @@ const AppFooter = () => {
         return (<></>);
     }
     return (
-        <React.Fragment>
+        <div style={{ marginTop: 50 }}>
             <CssBaseline />
             <AppBar position="fixed" sx={{ top: 'auto', bottom: 0, backgroundColor: '#f2f2f2' }}>
                 <Container sx={{ display: "flex", gap: 10 }}>
                     <AudioPlayer
+                        layout='horizontal-reverse'
                         src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/hoidanit.mp3`}
                         volume={0.5}
                         style={{ boxShadow: 'none', backgroundColor: '#f2f2f2' }}
@@ -37,7 +38,7 @@ const AppFooter = () => {
                     </div>
                 </Container>
             </AppBar>
-        </React.Fragment>
+        </div>
     );
 }
 
