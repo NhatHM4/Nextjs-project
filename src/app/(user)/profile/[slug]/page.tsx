@@ -13,7 +13,6 @@ const ProfilePage = async ({ params }: { params: { slug: string } }) => {
         body: { id: params.slug },
 
     });
-    console.log(tracks);
 
 
     return (

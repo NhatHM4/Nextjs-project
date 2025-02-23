@@ -10,6 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import PauseIcon from '@mui/icons-material/Pause';
+import Link from 'next/link';
 
 interface IProps {
     track: ITrackTop;
@@ -23,9 +24,8 @@ export default function TrackProfile({ track }: IProps) {
         <Card sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <CardContent sx={{ flex: '1 0 auto' }}>
-                    <Typography component="div" variant="h5">
-                        {track.title}
-                    </Typography>
+                    <Link href={`/track/${track._id}?audio=${track.trackUrl}&id=${track._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>{track.title}
+                    </Link>
                     <Typography
                         variant="subtitle1"
                         component="div"

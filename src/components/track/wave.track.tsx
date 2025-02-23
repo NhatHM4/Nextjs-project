@@ -1,16 +1,19 @@
 
 'use client'
-import { useHasMounted, useWavesurfer } from '@/utils/customHooks';
+import { useTrackContext } from '@/lib/track.wrapper';
+import { useWavesurfer } from '@/utils/customHooks';
+import PauseIcon from '@mui/icons-material/Pause';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import Tooltip from '@mui/material/Tooltip';
 import { useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { use, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { WaveSurferOptions } from 'wavesurfer.js';
 import './wave.scss';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import PauseIcon from '@mui/icons-material/Pause';
-import Tooltip from '@mui/material/Tooltip';
 
 
-const WaveTrack = () => {
+
+const WaveTrack = ({ track }: { track: ITrackTop | null }) => {
+    const trackContext = useTrackContext();
     const searchParams = useSearchParams()
     const fileName = searchParams.get('audio')
     const containerRef = useRef<HTMLDivElement>(null);
@@ -129,6 +132,24 @@ const WaveTrack = () => {
         return wavesurfer ? moment / 199 : 0
     }
 
+    useEffect(() => {
+        if (trackContext?.trackContext.isPlaying && isPlaying) {
+            wavesurfer?.pause();
+        }
+
+        console.log("trackContext change", trackContext?.trackContext);
+    }, [trackContext?.trackContext])
+
+    useEffect(() => {
+        if (track?._id && !trackContext?.trackContext._id) {
+            trackContext?.setTrackContext({
+                ...track,
+                isPlaying: false
+            });
+
+        }
+    }, [track])
+
 
 
     return (
@@ -155,7 +176,16 @@ const WaveTrack = () => {
                     <div className="info" style={{ display: "flex" }}>
                         <div>
                             <div
-                                onClick={() => onPlayPause()}
+                                onClick={() => {
+                                    onPlayPause();
+                                    if (track && wavesurfer) {
+
+                                        trackContext?.setTrackContext({
+                                            ...trackContext?.trackContext,
+                                            isPlaying: false
+                                        })
+                                    }
+                                }}
                                 style={{
                                     borderRadius: "50%",
                                     background: "#f50",
@@ -186,7 +216,7 @@ const WaveTrack = () => {
                                 width: "fit-content",
                                 color: "white"
                             }}>
-                                Hỏi Dân IT's song
+                                {track?.title}
                             </div>
                             <div style={{
                                 padding: "0 5px",
@@ -197,7 +227,7 @@ const WaveTrack = () => {
                                 color: "white"
                             }}
                             >
-                                Eric
+                                {track?.description}
                             </div>
                         </div>
                     </div>
@@ -219,8 +249,8 @@ const WaveTrack = () => {
 
                             {arrComments.map((comment) => {
                                 return (
-                                    <Tooltip title={`${comment.content}`} arrow>
-                                        <img key={comment.id}
+                                    <Tooltip key={comment.id} title={`${comment.content}`} arrow>
+                                        <img
                                             onPointerMove={(e) => {
                                                 const hover = hoverEl.current!;
                                                 hover.style.width = `calc(${calLeft(comment.moment) * 100}%)`
