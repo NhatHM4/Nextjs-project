@@ -1,6 +1,5 @@
 'use client'
 import TrackProfile from '@/components/track/TrackProfile';
-import { Container } from '@mui/material';
 import Grid from '@mui/material/Grid';
 
 interface IProps {

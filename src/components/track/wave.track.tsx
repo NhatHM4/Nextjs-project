@@ -6,13 +6,13 @@ import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import Tooltip from '@mui/material/Tooltip';
 import { useSearchParams } from 'next/navigation';
-import { use, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { WaveSurferOptions } from 'wavesurfer.js';
 import './wave.scss';
 
 
 
-const WaveTrack = ({ track }: { track: ITrackTop | null }) => {
+const WaveTrack = ({ track, comments }: { track: ITrackTop | null, comments: ITrackComment[] }) => {
     const trackContext = useTrackContext();
     const searchParams = useSearchParams()
     const fileName = searchParams.get('audio')
@@ -100,33 +100,6 @@ const WaveTrack = ({ track }: { track: ITrackTop | null }) => {
         const paddedSeconds = `0${secondsRemainder}`.slice(-2)
         return `${minutes}:${paddedSeconds}`
     }
-
-
-
-
-    const arrComments = [
-        {
-            id: 1,
-            avatar: "http://localhost:8000/images/chill1.png",
-            moment: 10,
-            user: "username 1",
-            content: "just a comment1"
-        },
-        {
-            id: 2,
-            avatar: "http://localhost:8000/images/chill1.png",
-            moment: 30,
-            user: "username 2",
-            content: "just a comment3"
-        },
-        {
-            id: 3,
-            avatar: "http://localhost:8000/images/chill1.png",
-            moment: 199,
-            user: "username 3",
-            content: "just a comment3"
-        },
-    ]
 
     const calLeft = (moment: number) => {
         return wavesurfer ? moment / 199 : 0
@@ -247,9 +220,9 @@ const WaveTrack = ({ track }: { track: ITrackTop | null }) => {
                         ></div>
                         <div className='comment'>
 
-                            {arrComments.map((comment) => {
+                            {comments.map((comment) => {
                                 return (
-                                    <Tooltip key={comment.id} title={`${comment.content}`} arrow>
+                                    <Tooltip key={comment._id} title={`${comment.content}`} arrow>
                                         <img
                                             onPointerMove={(e) => {
                                                 const hover = hoverEl.current!;
@@ -263,7 +236,7 @@ const WaveTrack = ({ track }: { track: ITrackTop | null }) => {
                                                 left: `calc(${calLeft(comment.moment) * 100}%)`,
                                                 zIndex: 20
                                             }}
-                                            src={`${comment.avatar}`} alt="avatar" />
+                                            src={`http://localhost:8000/images/chill1.png`} alt="avatar" />
                                     </Tooltip>
                                 )
                             })}

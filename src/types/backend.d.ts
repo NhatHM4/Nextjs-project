@@ -60,4 +60,13 @@ declare global {
         isPlaying: boolean;
     }
 
+    interface ITrackComment {
+        _id: string;
+        content: string;
+        moment: number;
+        user: IUser;
+        track: ITrack;
+        isDeleted: boolean;
+    }
+
 }
