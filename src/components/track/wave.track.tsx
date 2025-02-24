@@ -9,6 +9,9 @@ import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { WaveSurferOptions } from 'wavesurfer.js';
 import './wave.scss';
+import { fetchDefaultImage } from '@/utils/api';
+import TextField from '@mui/material/TextField';
+import CommentTrack from '@/components/track/comment.track';
 
 
 
@@ -101,6 +104,17 @@ const WaveTrack = ({ track, comments }: { track: ITrackTop | null, comments: ITr
         return `${minutes}:${paddedSeconds}`
     }
 
+    useEffect(() => {
+        if (track?._id && !trackContext?.trackContext._id) {
+            trackContext?.setTrackContext({
+                ...track,
+                isPlaying: false
+            });
+
+        }
+
+    }, [track])
+
     const calLeft = (moment: number) => {
         return wavesurfer ? moment / 199 : 0
     }
@@ -110,23 +124,14 @@ const WaveTrack = ({ track, comments }: { track: ITrackTop | null, comments: ITr
             wavesurfer?.pause();
         }
 
-        console.log("trackContext change", trackContext?.trackContext);
     }, [trackContext?.trackContext])
 
-    useEffect(() => {
-        if (track?._id && !trackContext?.trackContext._id) {
-            trackContext?.setTrackContext({
-                ...track,
-                isPlaying: false
-            });
 
-        }
-    }, [track])
 
 
 
     return (
-        <div style={{ marginTop: 20 }}>
+        <>
             <div
                 style={{
                     display: "flex",
@@ -134,7 +139,8 @@ const WaveTrack = ({ track, comments }: { track: ITrackTop | null, comments: ITr
                     padding: 20,
                     height: 400,
                     background: "linear-gradient(135deg, rgb(106, 112, 67) 0%, rgb(11, 15, 20) 100%)",
-                    borderRadius: 15
+                    borderRadius: 15,
+                    marginTop: 20
                 }}
             >
                 <div className="left"
@@ -236,7 +242,7 @@ const WaveTrack = ({ track, comments }: { track: ITrackTop | null, comments: ITr
                                                 left: `calc(${calLeft(comment.moment) * 100}%)`,
                                                 zIndex: 20
                                             }}
-                                            src={`http://localhost:8000/images/chill1.png`} alt="avatar" />
+                                            src={fetchDefaultImage(comment.user.type)} alt="avatar" />
                                     </Tooltip>
                                 )
                             })}
@@ -251,16 +257,33 @@ const WaveTrack = ({ track, comments }: { track: ITrackTop | null, comments: ITr
                         display: "flex",
                         alignItems: "center"
                     }}
+
                 >
-                    <div style={{
-                        background: "#ccc",
-                        width: 250,
-                        height: 250
-                    }}>
-                    </div>
+                    {
+                        track && track.imgUrl
+                            ?
+                            <img
+                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`}
+                                style={{
+                                    width: 250,
+                                    height: 250,
+                                    borderRadius: 5
+                                }}
+                                alt="track"
+                            />
+                            :
+                            <div style={{
+                                background: "#ccc",
+                                width: 250,
+                                height: 250
+                            }}>
+                            </div>
+                    }
                 </div>
             </div>
-        </div >
+            <CommentTrack track={track as ITrackTop} comments={comments} />
+
+        </>
     )
 }
 

@@ -32,37 +32,44 @@ const AppFooter = () => {
     }
 
     return (
-        <div style={{ marginTop: 50 }}>
-            <CssBaseline />
-            <AppBar position="fixed" sx={{ top: 'auto', bottom: 0, backgroundColor: '#f2f2f2' }}>
-                <Container sx={{ display: "flex", gap: 10 }}>
-                    <AudioPlayer
-                        ref={playerRef}
-                        layout='horizontal-reverse'
-                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${trackContext?.trackContext?.trackUrl}`}  // check if track is playing
-                        volume={0.5}
-                        style={{ boxShadow: 'none', backgroundColor: '#f2f2f2' }}
-                        onPlay={(e) => {
-                            trackContext?.setTrackContext({ ...trackContext?.trackContext, isPlaying: true });
-                        }}
-                        onPause={(e) => {
-                            trackContext?.setTrackContext({ ...trackContext?.trackContext, isPlaying: false });
-                        }}
+        <>
+            {
+                trackContext?.trackContext && (
+                    <div style={{ marginTop: 50 }}>
+                        <CssBaseline />
+                        <AppBar position="fixed" sx={{ top: 'auto', bottom: 0, backgroundColor: '#f2f2f2' }}>
+                            <Container sx={{ display: "flex", gap: 10 }}>
+                                <AudioPlayer
+                                    ref={playerRef}
+                                    layout='horizontal-reverse'
+                                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${trackContext?.trackContext?.trackUrl}`}  // check if track is playing
+                                    volume={0.5}
+                                    style={{ boxShadow: 'none', backgroundColor: '#f2f2f2' }}
+                                    onPlay={(e) => {
+                                        trackContext?.setTrackContext({ ...trackContext?.trackContext, isPlaying: true });
+                                    }}
+                                    onPause={(e) => {
+                                        trackContext?.setTrackContext({ ...trackContext?.trackContext, isPlaying: false });
+                                    }}
 
-                    />
-                    <div style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "start",
-                        justifyContent: "center",
-                        minWidth: 100
-                    }}>
-                        <div style={{ color: "#ccc" }}>{trackContext?.trackContext?.title}</div>
-                        <div style={{ color: "black" }}>{trackContext?.trackContext?.description}</div>
+                                />
+                                <div style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "start",
+                                    justifyContent: "center",
+                                    minWidth: 100
+                                }}>
+                                    <div style={{ color: "#ccc" }}>{trackContext?.trackContext?.title}</div>
+                                    <div style={{ color: "black" }}>{trackContext?.trackContext?.description}</div>
+                                </div>
+                            </Container>
+                        </AppBar>
                     </div>
-                </Container>
-            </AppBar>
-        </div>
+                )
+            }
+
+        </>
     );
 }
 
