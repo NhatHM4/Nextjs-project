@@ -1,12 +1,10 @@
 "use client"
-import React from 'react';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
 import Step1 from '@/components/track/step/step1';
 import Step2 from '@/components/track/step/step2';
-import { Percent } from '@mui/icons-material';
-import { ToastProvider } from '@/utils/toast/useToast';
+import Box from '@mui/material/Box';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import React from 'react';
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;

@@ -116,7 +116,7 @@ const WaveTrack = ({ track, comments }: { track: ITrackTop | null, comments: ITr
     }, [track])
 
     const calLeft = (moment: number) => {
-        return wavesurfer ? moment / 199 : 0
+        return wavesurfer ? moment / wavesurfer.getDuration() : 0
     }
 
     useEffect(() => {
@@ -281,7 +281,7 @@ const WaveTrack = ({ track, comments }: { track: ITrackTop | null, comments: ITr
                     }
                 </div>
             </div>
-            <CommentTrack track={track as ITrackTop} comments={comments} />
+            <CommentTrack track={track as ITrackTop} comments={comments} wavesurfer={wavesurfer} />
 
         </>
     )

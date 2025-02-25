@@ -38,7 +38,7 @@ const AppFooter = () => {
                     <div style={{ marginTop: 50 }}>
                         <CssBaseline />
                         <AppBar position="fixed" sx={{ top: 'auto', bottom: 0, backgroundColor: '#f2f2f2' }}>
-                            <Container sx={{ display: "flex", gap: 10 }}>
+                            <Container disableGutters sx={{ display: "flex", gap: 10 }}>
                                 <AudioPlayer
                                     ref={playerRef}
                                     layout='horizontal-reverse'
@@ -60,8 +60,25 @@ const AppFooter = () => {
                                     justifyContent: "center",
                                     minWidth: 100
                                 }}>
-                                    <div style={{ color: "#ccc" }}>{trackContext?.trackContext?.title}</div>
-                                    <div style={{ color: "black" }}>{trackContext?.trackContext?.description}</div>
+                                    <div style={{
+                                        width: "100%",
+                                        color: "#ccc",
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                        whiteSpace: "nowrap"
+                                    }}>
+                                        {trackContext?.trackContext?.title}
+                                    </div>
+                                    <div style={{
+                                        width: "100%",
+                                        color: "black",
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                        whiteSpace: "nowrap"
+
+                                    }}>
+                                        {trackContext?.trackContext?.description}
+                                    </div>
                                 </div>
                             </Container>
                         </AppBar>
