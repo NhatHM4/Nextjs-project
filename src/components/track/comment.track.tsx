@@ -1,8 +1,18 @@
+import { fetchDefaultImage } from '@/utils/api';
+import { Avatar, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
 
 interface IProps {
     track: ITrackTop;
     comments: ITrackComment[];
+}
+
+function formatSecondsToMMSS(seconds: number) {
+    return dayjs().startOf('day').add(seconds, 'seconds').format('mm:ss');
 }
 
 const CommentTrack = ({ track, comments }: IProps) => {
@@ -35,7 +45,30 @@ const CommentTrack = ({ track, comments }: IProps) => {
                     <p style={{ justifyContent: 'center' }}>{track.uploader.email}</p>
                 </div>
                 <div className='right' style={{ width: 'calc(100% - 300px)' }}>
-                    right
+                    {
+                        comments.map((comment, index) => (
+                            <ListItem key={index} alignItems="flex-start" >
+                                <ListItemAvatar>
+                                    <Avatar src={fetchDefaultImage(comment.user.type)} />
+                                </ListItemAvatar>
+                                <ListItemText
+                                    primary={
+                                        <Typography variant="body1" >
+                                            {comment.user.email} at {formatSecondsToMMSS(comment.moment)}
+                                        </Typography>
+                                    }
+                                    secondary={
+                                        <Typography variant="body2" color="textSecondary">
+                                            {comment.content}
+                                        </Typography>
+                                    }
+                                />
+                                <Typography variant="caption" color="textSecondary">
+                                    {dayjs(comment.createdAt).fromNow()}
+                                </Typography>
+                            </ListItem>
+                        ))
+                    }
                 </div>
 
             </div>

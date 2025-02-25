@@ -67,6 +67,8 @@ declare global {
         user: IUser;
         track: ITrack;
         isDeleted: boolean;
+        createdAt: string;
+        updatedAt: string;
     }
 
 }
