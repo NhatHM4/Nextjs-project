@@ -7,6 +7,9 @@ const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
     const res = await sendRequest<IBackendRes<ITrackTop>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${params.slug}`,
         method: 'GET',
+        nextOption: {
+            caches: 'no-cache',
+        }
     });
 
     const resComment = await sendRequest<IBackendRes<IModelPaginate<ITrackComment>>>({
@@ -20,7 +23,7 @@ const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
         },
     });
 
-    console.log(resComment);
+    console.log(res?.data);
 
 
     return (

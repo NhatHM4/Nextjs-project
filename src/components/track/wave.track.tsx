@@ -1,7 +1,7 @@
 
 'use client'
 import { useTrackContext } from '@/lib/track.wrapper';
-import { useWavesurfer } from '@/utils/customHooks';
+import { useHasMounted, useWavesurfer } from '@/utils/customHooks';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import Tooltip from '@mui/material/Tooltip';
@@ -12,12 +12,15 @@ import './wave.scss';
 import { fetchDefaultImage } from '@/utils/api';
 import TextField from '@mui/material/TextField';
 import CommentTrack from '@/components/track/comment.track';
+import LikeTrack from '@/components/track/like.track';
+import { Box } from '@mui/material';
 
 
 
 const WaveTrack = ({ track, comments }: { track: ITrackTop | null, comments: ITrackComment[] }) => {
     const trackContext = useTrackContext();
     const searchParams = useSearchParams()
+    const hasMounted = useHasMounted();
     const fileName = searchParams.get('audio')
     const containerRef = useRef<HTMLDivElement>(null);
     const timeEl = useRef<HTMLDivElement>(null);
@@ -281,6 +284,9 @@ const WaveTrack = ({ track, comments }: { track: ITrackTop | null, comments: ITr
                     }
                 </div>
             </div>
+            <Box sx={{ marginTop: 2 }}>
+                <LikeTrack track={track as ITrackTop} />
+            </Box>
             <CommentTrack track={track as ITrackTop} comments={comments} wavesurfer={wavesurfer} />
 
         </>
