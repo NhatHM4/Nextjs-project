@@ -8,8 +8,8 @@ const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${params.slug}`,
         method: 'GET',
         nextOption: {
-            caches: 'no-cache',
-        }
+            next: { revalidate: 0 }
+        },
     });
 
     const resComment = await sendRequest<IBackendRes<IModelPaginate<ITrackComment>>>({
