@@ -1,10 +1,10 @@
-import { Box, Button, Chip, Typography } from "@mui/material";
+import { sendRequest } from "@/utils/api";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import { sendRequest } from "@/utils/api";
+import { Box, Chip, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const LikeTrack = ({ track }: { track: ITrackTop }) => {
     const session = useSession();
