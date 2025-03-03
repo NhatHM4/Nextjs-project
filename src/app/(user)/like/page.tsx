@@ -1,3 +1,9 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: 'Like Page',
+    description: 'This is the like page',
+}
 
 const LikePage = () => {
     return (

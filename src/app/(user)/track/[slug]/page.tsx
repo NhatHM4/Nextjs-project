@@ -2,6 +2,39 @@
 import WaveTrack from '@/components/track/wave.track';
 import { sendRequest } from '@/utils/api';
 import { Container } from '@mui/material';
+
+import type { Metadata, ResolvingMetadata } from 'next'
+
+type Props = {
+    params: { slug: string }
+}
+
+export async function generateMetadata(
+    { params }: Props,
+    parent: ResolvingMetadata
+): Promise<Metadata> {
+
+    // fetch data
+    const res = await sendRequest<IBackendRes<ITrackTop>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${params.slug}`,
+        method: 'GET',
+    });
+
+    return {
+        title: res.data?.title,
+        description: res.data?.description,
+        openGraph: {
+            title: 'Hỏi Dân IT',
+            description: 'Beyond Your Coding Skills',
+            type: 'website',
+            images: [`https://raw.githubusercontent.com/hoidanit/images-hosting/master/eric.png`],
+        },
+
+    }
+}
+
+
+
 const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
 
     const res = await sendRequest<IBackendRes<ITrackTop>>({

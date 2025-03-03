@@ -1,7 +1,7 @@
 
 'use client'
 import { useTrackContext } from '@/lib/track.wrapper';
-import { useHasMounted, useWavesurfer } from '@/utils/customHooks';
+import { useWavesurfer } from '@/utils/customHooks';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import Tooltip from '@mui/material/Tooltip';
