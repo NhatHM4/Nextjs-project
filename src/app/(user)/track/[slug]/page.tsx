@@ -13,10 +13,10 @@ export async function generateMetadata(
     { params }: Props,
     parent: ResolvingMetadata
 ): Promise<Metadata> {
-
+    const slug = params.slug.split('.')[0].substring(params.slug.split('.')[0].lastIndexOf('-') + 1);
     // fetch data
     const res = await sendRequest<IBackendRes<ITrackTop>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${params.slug}`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${slug}`,
         method: 'GET',
     });
 
@@ -36,16 +36,10 @@ export async function generateMetadata(
 
 
 const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
-
-    console.log(slugify("Lệ Lưu Ly",
-        {
-            lower: true,
-            locale: 'vi'
-
-        }));
+    const slug = params.slug.split('.')[0].substring(params.slug.split('.')[0].lastIndexOf('-') + 1);
 
     const res = await sendRequest<IBackendRes<ITrackTop>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${params.slug}`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${slug}`,
         method: 'GET',
         nextOption: {
             next: { revalidate: 0 }
@@ -56,7 +50,7 @@ const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/comments`,
         method: 'POST',
         queryParams: {
-            trackId: params.slug,
+            trackId: slug,
             current: 1,
             pageSize: 10,
             sort: '-createdAt',
