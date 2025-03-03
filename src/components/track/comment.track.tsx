@@ -87,7 +87,7 @@ const CommentTrack = ({ track, comments, wavesurfer }: IProps) => {
                             }}>
                             </div>
                     }
-                    <p style={{ justifyContent: 'center' }}>{track.uploader.email}</p>
+                    <p style={{ justifyContent: 'center' }}>{track?.uploader?.email}</p>
                 </div>
                 <div className='right' style={{ width: 'calc(100% - 300px)' }}>
                     {

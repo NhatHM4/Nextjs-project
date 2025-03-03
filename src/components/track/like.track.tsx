@@ -37,7 +37,7 @@ const LikeTrack = ({ track }: { track: ITrackTop }) => {
                 Authorization: `Bearer ${session.data?.access_token}`
             },
         });
-        if (resLike.data && resLike.data.result.find((item) => item._id === track._id)) {
+        if (resLike.data && resLike.data.result.find((item) => item?._id === track?._id)) {
             setLiked(true);
         }
     }
@@ -61,11 +61,11 @@ const LikeTrack = ({ track }: { track: ITrackTop }) => {
                 <Box display="flex" alignItems="center" gap={2} color="gray">
                     <Box display="flex" alignItems="center" gap={0.5}>
                         <PlayArrowIcon fontSize="small" />
-                        <Typography variant="body2">{track.countPlay}</Typography>
+                        <Typography variant="body2">{track?.countPlay}</Typography>
                     </Box>
                     <Box display="flex" alignItems="center" gap={0.5}>
                         <FavoriteIcon fontSize="small" />
-                        <Typography variant="body2">{track.countLike}</Typography>
+                        <Typography variant="body2">{track?.countLike}</Typography>
                     </Box>
                 </Box>
             </div>

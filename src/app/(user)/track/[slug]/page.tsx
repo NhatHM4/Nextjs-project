@@ -2,7 +2,7 @@
 import WaveTrack from '@/components/track/wave.track';
 import { sendRequest } from '@/utils/api';
 import { Container } from '@mui/material';
-
+import slugify from 'slugify';
 import type { Metadata, ResolvingMetadata } from 'next'
 
 type Props = {
@@ -37,6 +37,13 @@ export async function generateMetadata(
 
 const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
 
+    console.log(slugify("Lệ Lưu Ly",
+        {
+            lower: true,
+            locale: 'vi'
+
+        }));
+
     const res = await sendRequest<IBackendRes<ITrackTop>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${params.slug}`,
         method: 'GET',
@@ -56,7 +63,7 @@ const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
         },
     });
 
-    console.log(res?.data);
+    // console.log(res?.data);
 
 
     return (

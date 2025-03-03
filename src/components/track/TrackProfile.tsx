@@ -11,6 +11,7 @@ import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import PauseIcon from '@mui/icons-material/Pause';
 import Link from 'next/link';
+import { convertToSlug } from '@/utils/api';
 
 interface IProps {
     track: ITrackTop;
@@ -24,7 +25,7 @@ export default function TrackProfile({ track }: IProps) {
         <Card sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <CardContent sx={{ flex: '1 0 auto' }}>
-                    <Link href={`/track/${track._id}?audio=${track.trackUrl}&id=${track._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>{track.title}
+                    <Link href={`/track/${convertToSlug(track.title)}-${track._id}.html?audio=${track.trackUrl}`} style={{ textDecoration: 'none', color: 'inherit' }}>{track.title}
                     </Link>
                     <Typography
                         variant="subtitle1"

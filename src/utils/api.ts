@@ -1,4 +1,6 @@
+import exp from 'constants';
 import queryString from 'query-string';
+import slugify from 'slugify';
 
 export const sendRequest = async <T>(props: IRequest) => {
     let {
@@ -88,4 +90,15 @@ export const fetchDefaultImage = (type: string) => {
     } else {
         return '/user/default-user.png';
     }
+}
+
+
+export const convertToSlug = (text: string) => {
+    if (!text) return '';
+    return slugify(text,
+        {
+            lower: true,
+            locale: 'vi'
+
+        })
 }
