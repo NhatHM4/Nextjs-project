@@ -7,6 +7,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import Image from 'next/image';
 
 dayjs.extend(relativeTime);
 
@@ -70,13 +71,11 @@ const CommentTrack = ({ track, comments, wavesurfer }: IProps) => {
                     {
                         track && track.imgUrl
                             ?
-                            <img
+                            <Image
                                 src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`}
-                                style={{
-                                    width: 200,
-                                    height: 200,
-                                    borderRadius: 100
-                                }}
+                                width={200}
+                                height={200}
+                                style={{ borderRadius: 100 }}
                                 alt="track"
                             />
                             :

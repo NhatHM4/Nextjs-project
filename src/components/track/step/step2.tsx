@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 const category = [
     {
@@ -172,7 +173,13 @@ const Step2 = ({ audio, setValue }: IProps) => {
                             }}>
                                 {
                                     info.imgUrl &&
-                                    <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${info.imgUrl}`} style={{ width: '100%', height: '100%' }} />
+                                    <Image
+                                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${info.imgUrl}`}
+                                        width={250}
+                                        height={250}
+                                        style={{ borderRadius: 100 }}
+                                        alt="track"
+                                    />
                                 }
 
                             </div>

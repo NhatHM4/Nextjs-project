@@ -1,21 +1,19 @@
 
 'use client'
+import CommentTrack from '@/components/track/comment.track';
+import LikeTrack from '@/components/track/like.track';
 import { useTrackContext } from '@/lib/track.wrapper';
+import { fetchDefaultImage, sendRequest } from '@/utils/api';
 import { useWavesurfer } from '@/utils/customHooks';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import { Box } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { WaveSurferOptions } from 'wavesurfer.js';
 import './wave.scss';
-import { fetchDefaultImage, sendRequest } from '@/utils/api';
-import TextField from '@mui/material/TextField';
-import CommentTrack from '@/components/track/comment.track';
-import LikeTrack from '@/components/track/like.track';
-import { Box } from '@mui/material';
-
-
+import Image from 'next/image';
 
 const WaveTrack = ({ track, comments }: { track: ITrackTop | null, comments: ITrackComment[] }) => {
     const isCounted = useRef(true);
@@ -251,20 +249,21 @@ const WaveTrack = ({ track, comments }: { track: ITrackTop | null, comments: ITr
                             {comments.map((comment) => {
                                 return (
                                     <Tooltip key={comment._id} title={`${comment.content}`} arrow>
-                                        <img
+                                        <Image
                                             onPointerMove={(e) => {
                                                 const hover = hoverEl.current!;
                                                 hover.style.width = `calc(${calLeft(comment.moment) * 100}%)`
                                             }}
                                             style={{
-                                                height: 20,
-                                                width: 20,
                                                 position: 'absolute',
                                                 top: 145,
                                                 left: `calc(${calLeft(comment.moment) * 100}%)`,
                                                 zIndex: 20
                                             }}
+                                            width={20}
+                                            height={20}
                                             src={fetchDefaultImage(comment.user.type)} alt="avatar" />
+
                                     </Tooltip>
                                 )
                             })}
@@ -284,13 +283,11 @@ const WaveTrack = ({ track, comments }: { track: ITrackTop | null, comments: ITr
                     {
                         track && track.imgUrl
                             ?
-                            <img
+                            <Image
                                 src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`}
-                                style={{
-                                    width: 250,
-                                    height: 250,
-                                    borderRadius: 5
-                                }}
+                                width={250}
+                                height={250}
+                                style={{ borderRadius: 5 }}
                                 alt="track"
                             />
                             :

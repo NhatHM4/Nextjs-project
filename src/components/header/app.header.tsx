@@ -1,7 +1,7 @@
 'use client';
+import { fetchDefaultImage } from '@/utils/api';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import SearchIcon from '@mui/icons-material/Search';
-import { Avatar, Button } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -12,11 +12,11 @@ import MenuItem from '@mui/material/MenuItem';
 import { alpha, styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { signOut, useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import * as React from 'react';
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useSession, signIn, signOut } from 'next-auth/react';
-import { fetchDefaultImage } from '@/utils/api';
+import Image from 'next/image';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -188,10 +188,11 @@ export default function AppHeader() {
                                         <Link href="/track/upload" >
                                             <span>Upload</span>
                                         </Link>
-                                        <img
+                                        <Image
                                             onClick={handleProfileMenuOpen} src={fetchDefaultImage(session.data.user?.type)}
                                             alt="profile"
-                                            style={{ borderRadius: '50%', width: '30px', height: '30px' }}
+                                            height={40}
+                                            width={40}
                                         />
                                     </>
                                     :
