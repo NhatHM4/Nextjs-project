@@ -57,6 +57,8 @@ const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
         },
     });
 
+    await new Promise(resolve => setTimeout(resolve, 3000))
+
     if (!res.data) return notFound();
 
 
