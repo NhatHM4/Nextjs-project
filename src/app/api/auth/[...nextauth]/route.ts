@@ -24,7 +24,7 @@ export const authOptions: AuthOptions = {
             async authorize(credentials, req) {
                 // Add logic here to look up the user from the credentials supplied
                 const res = await sendRequest<IBackendRes<JWT>>({
-                    url: 'http://localhost:8000/api/v1/auth/login',
+                    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/login`,
                     method: 'POST',
                     body: { username: credentials?.username, password: credentials?.password }
                 });
@@ -54,7 +54,7 @@ export const authOptions: AuthOptions = {
         async jwt({ token, user, account, profile, trigger }) {
             if (trigger === 'signIn' && account?.provider === 'github') {
                 const res = await sendRequest<IBackendRes<JWT>>({
-                    url: 'http://localhost:8000/api/v1/auth/social-media',
+                    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/social-media`,
                     method: 'POST',
                     body: { type: "GITHUB", username: user.email }
                 });
