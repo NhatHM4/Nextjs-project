@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: 'standalone',
+  // output: 'standalone',
   swcMinify: true,
   modularizeImports: {
     '@mui/icons-material': {
@@ -12,8 +12,8 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'http',
-        hostname: 'host.docker.internal',
-        port: '8001',
+        hostname: 'localhost',
+        port: '8000',
         pathname: '/images/**',
       },
     ],

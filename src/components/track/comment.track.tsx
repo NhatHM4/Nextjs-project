@@ -93,12 +93,12 @@ const CommentTrack = ({ track, comments, wavesurfer }: IProps) => {
                         comments.map((comment, index) => (
                             <ListItem key={index} alignItems="flex-start" >
                                 <ListItemAvatar>
-                                    <Avatar src={fetchDefaultImage(comment.user.type)} />
+                                    <Avatar src={fetchDefaultImage(comment?.user?.type)} />
                                 </ListItemAvatar>
                                 <ListItemText
                                     primary={
                                         <Typography variant="body1" >
-                                            {comment.user.email} at
+                                            {comment?.user?.email} at
                                             <span style={{ cursor: 'pointer' }} onClick={() => handleJumpSeek(comment.moment)}>
                                                 {formatSecondsToMMSS(comment.moment)}
                                             </span>

@@ -42,7 +42,7 @@ const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${slug}`,
         method: 'GET',
         nextOption: {
-            next: { revalidate: 0 }
+            next: { tags: ["like-track"] }
         },
     });
 
@@ -56,8 +56,6 @@ const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
             sort: '-createdAt',
         },
     });
-
-    await new Promise(resolve => setTimeout(resolve, 3000))
 
     if (!res.data) return notFound();
 

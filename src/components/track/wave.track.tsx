@@ -262,7 +262,7 @@ const WaveTrack = ({ track, comments }: { track: ITrackTop | null, comments: ITr
                                             }}
                                             width={20}
                                             height={20}
-                                            src={fetchDefaultImage(comment.user.type)} alt="avatar" />
+                                            src={fetchDefaultImage(comment?.user?.type)} alt="avatar" />
 
                                     </Tooltip>
                                 )

@@ -23,6 +23,7 @@ const LikeTrack = ({ track }: { track: ITrackTop }) => {
                 Authorization: `Bearer ${session.data?.access_token}`
             },
         });
+        await fetch(`/api/revalidate?tag=like-track&secret=haminhnhat711`, { method: "POST" });
         if (resLike.data) {
             setLiked(!liked);
             router.refresh();
