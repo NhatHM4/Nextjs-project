@@ -78,6 +78,14 @@ const WaveTrack = ({ track, comments }: { track: ITrackTop | null, comments: ITr
                     trackId: track?._id
                 }
             });
+            await sendRequest<IBackendRes<ITrackTop>>({
+                url: `/api/revalidate`,
+                method: "POST",
+                queryParams: {
+                    tag: "like-track",
+                    secret: "haminhnhat711"
+                }
+            });
             if (resCountView?.data) {
                 router.refresh();
             }

@@ -150,6 +150,14 @@ const Step2 = ({ audio, setValue }: IProps) => {
                 'Authorization': `Bearer ${session?.access_token}`
             }
         });
+        await sendRequest<IBackendRes<ITrackTop>>({
+            url: `/api/revalidate`,
+            method: "POST",
+            queryParams: {
+                tag: "profile-track",
+                secret: "haminhnhat711"
+            }
+        });
 
         if (res.data) {
             setValue(0);
