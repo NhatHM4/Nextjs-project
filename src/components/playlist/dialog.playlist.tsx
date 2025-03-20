@@ -17,7 +17,7 @@ export interface SimpleDialogProps {
     onClose: () => void;
 }
 
-export function SimpleDialog(props: SimpleDialogProps) {
+export function PlaylistPage(props: SimpleDialogProps) {
     const { onClose, open } = props;
     const [title, setTitle] = useState("");
     const [isPublic, setIsPublic] = useState(false);
