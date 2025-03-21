@@ -24,6 +24,9 @@ const LikePage = async () => {
         headers: {
             'Authorization': `Bearer ${session?.access_token}`
         },
+        nextOption: {
+            next: { tags: ["like-track"] }
+        },
     });
 
     return (
