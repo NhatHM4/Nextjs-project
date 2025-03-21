@@ -18,6 +18,7 @@ const ProfilePage = async ({ params }: { params: { slug: string } }) => {
     });
 
 
+
     return (
         <Container sx={{ py: 2 }}>
             <ProfileGrid tracks={tracks?.data?.result ?? []} />
