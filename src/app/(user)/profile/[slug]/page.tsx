@@ -3,6 +3,12 @@
 import ProfileGrid from "@/components/track/ProfileGrid";
 import { sendRequest } from "@/utils/api";
 import { Container } from "@mui/material";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: 'Profile Page',
+    description: 'This is the Profile page',
+}
 
 
 const ProfilePage = async ({ params }: { params: { slug: string } }) => {

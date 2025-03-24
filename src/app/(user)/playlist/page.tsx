@@ -2,6 +2,12 @@ import PlayList from "@/components/playlist/playlist.list";
 import { sendRequest } from "@/utils/api";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: 'Playlist Page',
+    description: 'This is the Playlist page',
+}
 
 const PlaylistPage = async () => {
 

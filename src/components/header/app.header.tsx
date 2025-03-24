@@ -17,6 +17,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import Image from 'next/image';
+import ActiveLink from '@/components/header/active.link';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -127,9 +128,9 @@ export default function AppHeader() {
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
             <MenuItem onClick={handleMenuClose}>
-                <Link href={`/profile/${session.data?.user?._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <ActiveLink href={`/profile/${session.data?.user?._id}`} >
                     Profile
-                </Link>
+                </ActiveLink>
             </MenuItem>
             <MenuItem onClick={() => { handleMenuClose(); signOut(); }}>
                 Logout
@@ -178,7 +179,10 @@ export default function AppHeader() {
                             cursor: 'pointer',
                             "> a": {
                                 color: 'unset',
-                                textDecoration: 'unset'
+                                textDecoration: 'unset',
+                                "&.active": {
+                                    color: '#cefaff',
+                                }
                             }
                         }}>
 
@@ -186,15 +190,15 @@ export default function AppHeader() {
                                 session.status === 'authenticated'
                                     ?
                                     <>
-                                        <Link href="/playlist" >
+                                        <ActiveLink href="/playlist" >
                                             <span>Playlists</span>
-                                        </Link>
-                                        <Link href="/like" >
+                                        </ActiveLink>
+                                        <ActiveLink href="/like" >
                                             <span>Likes</span>
-                                        </Link>
-                                        <Link href="/track/upload" >
+                                        </ActiveLink>
+                                        <ActiveLink href="/track/upload" >
                                             <span>Upload</span>
-                                        </Link>
+                                        </ActiveLink>
                                         <Image
                                             onClick={handleProfileMenuOpen} src={fetchDefaultImage(session.data.user?.type)}
                                             alt="profile"
@@ -203,9 +207,9 @@ export default function AppHeader() {
                                         />
                                     </>
                                     :
-                                    <Link href={"/auth/signin"} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <ActiveLink href={"/auth/signin"} >
                                         Login
-                                    </Link>
+                                    </ActiveLink>
                             }
 
                         </Box>

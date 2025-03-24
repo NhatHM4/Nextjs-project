@@ -2,8 +2,8 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import LikeByUser from "@/components/like/like.page";
 import { sendRequest } from "@/utils/api";
 import { Container } from "@mui/material";
-import { Metadata } from "next";
 import { getServerSession } from "next-auth/next";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
     title: 'Like Page',
