@@ -1,4 +1,5 @@
 import { sendRequest } from "@/utils/api";
+import dayjs, { ManipulateType } from "dayjs";
 import NextAuth, { AuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -68,6 +69,8 @@ export const authOptions: AuthOptions = {
                     token.refresh_token = res.data.refresh_token;
                     token.user = res.data.user;
                     token.user.image = user?.image as string;
+                    token.accessTokenExpires = dayjs(new Date()).add(+(process.env.TOKEN_EXPIRES_NUMBER as string),
+                        (process.env.TOKEN_EXPIRES_UNIT as ManipulateType)).unix();
                 }
             }
 
@@ -82,6 +85,8 @@ export const authOptions: AuthOptions = {
                     token.refresh_token = res.data.refresh_token;
                     token.user = res.data.user;
                     token.user.image = user?.image as string;
+                    token.accessTokenExpires = dayjs(new Date()).add(+(process.env.TOKEN_EXPIRES_NUMBER as string),
+                        (process.env.TOKEN_EXPIRES_UNIT as ManipulateType)).unix();
                 }
             }
 
@@ -94,8 +99,25 @@ export const authOptions: AuthOptions = {
                     token.refresh_token = user?.refresh_token;
                     //@ts-ignore
                     token.user = user?.user;
+                    token.accessTokenExpires = dayjs(new Date()).add(+(process.env.TOKEN_EXPIRES_NUMBER as string),
+                        (process.env.TOKEN_EXPIRES_UNIT as ManipulateType)).unix();
                 }
             }
+
+            const isExpired = dayjs.unix(token.accessTokenExpires).isBefore(dayjs(new Date()));
+            if (isExpired) {
+                try {
+                    const accessTokenRenew = await getAccessTokenByRefreshToken(token.refresh_token);
+                    token.access_token = accessTokenRenew;
+                    token.accessTokenExpires = dayjs(new Date()).add(+(process.env.TOKEN_EXPIRES_NUMBER as string),
+                        (process.env.TOKEN_EXPIRES_UNIT as ManipulateType)).unix();
+                } catch (error) {
+                    //@ts-ignore
+                    token.error = error.message as string;
+                }
+
+            }
+
             return token
         },
 
@@ -104,6 +126,8 @@ export const authOptions: AuthOptions = {
             session.user = token.user
             session.access_token = token.access_token
             session.refresh_token = token.refresh_token
+            session.accessTokenExpires = token.accessTokenExpires
+            session.error = token.error
             return session
         },
 
@@ -117,6 +141,21 @@ export const authOptions: AuthOptions = {
 }
 
 const handler = NextAuth(authOptions)
+
+const getAccessTokenByRefreshToken = async (refreshToken: string) => {
+    const res = await sendRequest<IBackendRes<any>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/refresh`,
+        method: 'POST',
+        body: { refresh_token: refreshToken },
+        useCredentials: true
+    });
+    if (res.data) {
+        return res.data.access_token;
+    } else {
+        throw new Error(res.message);
+    }
+}
+
 
 export { handler as GET, handler as POST };
 
