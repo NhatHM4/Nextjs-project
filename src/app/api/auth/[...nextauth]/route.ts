@@ -103,7 +103,6 @@ export const authOptions: AuthOptions = {
                         (process.env.TOKEN_EXPIRES_UNIT as ManipulateType)).unix();
                 }
             }
-
             const isExpired = dayjs.unix(token.accessTokenExpires).isBefore(dayjs(new Date()));
             if (isExpired) {
                 try {
