@@ -103,30 +103,27 @@ export const authOptions: AuthOptions = {
                         (process.env.TOKEN_EXPIRES_UNIT as ManipulateType)).unix();
                 }
             }
-            const isExpired = dayjs.unix(token.accessTokenExpires).isBefore(dayjs(new Date()));
-            if (isExpired) {
-                try {
-                    const accessTokenRenew = await getAccessTokenByRefreshToken(token.refresh_token);
-                    token.access_token = accessTokenRenew;
-                    token.accessTokenExpires = dayjs(new Date()).add(+(process.env.TOKEN_EXPIRES_NUMBER as string),
-                        (process.env.TOKEN_EXPIRES_UNIT as ManipulateType)).unix();
-                } catch (error) {
-                    //@ts-ignore
-                    token.error = error.message as string;
-                }
-
+            const isTimeAfter = dayjs(dayjs(new Date())).isAfter(dayjs.unix((token?.access_expire as number ?? 0)));
+            if (isTimeAfter) {
+                return refreshAccessToken(token)
             }
 
             return token
         },
 
         // sau khi modify cái token thì nạp ngược lại cho session
-        session({ session, token, user }) {
+        //@ts-ignore
+        session({ session, token, user, req, res }) {
             session.user = token.user
             session.access_token = token.access_token
             session.refresh_token = token.refresh_token
             session.accessTokenExpires = token.accessTokenExpires
             session.error = token.error
+            if (token.refreshToken && res) {
+                res.setHeader('Set-Cookie', [
+                    `refreshToken=${token.refresh_token}; HttpOnly; Path=/; Max-Age=604800; SameSite=Lax`, // 7 ngày
+                ]);
+            }
             return session
         },
 
@@ -146,13 +143,51 @@ const getAccessTokenByRefreshToken = async (refreshToken: string) => {
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/refresh`,
         method: 'POST',
         body: { refresh_token: refreshToken },
-        useCredentials: true
+        nextOption: {
+            credentials: "include"
+        }
     });
     if (res.data) {
         return res.data.access_token;
     } else {
         throw new Error(res.message);
     }
+}
+
+async function refreshAccessToken(token: JWT) {
+
+    const res = await sendRequest<IBackendRes<JWT>>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/refresh`,
+        method: "POST",
+        body: { refresh_token: token?.refresh_token },
+        nextOption: {
+            credentials: "include"
+        }
+    })
+
+    if (res.data) {
+        // console.log(">>> check old token: ", token.access_token);
+        // console.log(">>> check new token: ", res.data?.access_token)
+        console.log(">>> refresh token success")
+
+        return {
+            ...token,
+            access_token: res.data?.access_token ?? "",
+            refresh_token: res.data?.refresh_token ?? "",
+            access_expire: dayjs(new Date()).add(
+                +(process.env.TOKEN_EXPIRE_NUMBER as string), (process.env.TOKEN_EXPIRE_UNIT as any)
+            ).unix(),
+            error: ""
+        }
+    } else {
+        console.log(">>> refresh token failed")
+        //failed to refresh token => do nothing
+        return {
+            ...token,
+            error: "RefreshAccessTokenError", // This is used in the front-end, and if present, we can force a re-login, or similar
+        }
+    }
+
 }
 
 
