@@ -1,3 +1,4 @@
+import { handleLikeTrackServerAction } from "@/utils/actions/action";
 import { sendRequest } from "@/utils/api";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -12,25 +13,7 @@ const LikeTrack = ({ track }: { track: ITrackTop }) => {
     const router = useRouter();
 
     const handleLike = async () => {
-        const resLike = await sendRequest<IBackendRes<ITrackTop>>({
-            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/likes`,
-            method: 'POST',
-            body: {
-                track: track._id,
-                quantity: liked ? -1 : 1
-            },
-            headers: {
-                Authorization: `Bearer ${session.data?.access_token}`
-            },
-        });
-        await sendRequest<IBackendRes<ITrackTop>>({
-            url: `/api/revalidate`,
-            method: "POST",
-            queryParams: {
-                tag: "like-track",
-                secret: "haminhnhat711"
-            }
-        });
+        const resLike = await handleLikeTrackServerAction(track, liked, session?.data?.access_token ?? '');
         if (resLike.data) {
             setLiked(!liked);
             router.refresh();
